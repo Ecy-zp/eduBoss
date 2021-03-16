@@ -1,0 +1,6 @@
+@import './variables.scss';
+
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+// 引入默认样式主题文件
+@import "~element-ui/packages/theme-chalk/src/index";
