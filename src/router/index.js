@@ -92,11 +92,16 @@ router.beforeEach((to, from, next) => {
     // 验证用户信息是否存在
     if (!store.state.user) {
       // 未登录,跳转到登录
-      return next({ name: 'login' })
+      return next({
+        name: 'login',
+        query: {
+          // 将本次路由的额fullPath传递给login页面
+          redirect: to.fullPath
+        }
+      })
     }
     next()
   } else {
-    console.log('当前不要验证')
     next() // 确保一定要调用 next()
   }
 })
