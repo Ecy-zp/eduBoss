@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 
 // 引入路由中需要使用的组件功能
 // import Login from '@/views/login/index'
@@ -15,7 +16,7 @@ import VueRouter from 'vue-router'
 // import ErrorPage from '@/views/error-page/index'
 
 Vue.use(VueRouter)
-// 路由规则
+// 路由规则(添加需要认证的requiresAuth)
 const routes = [
   {
     path: '/login',
@@ -25,6 +26,10 @@ const routes = [
   {
     path: '/',
     component: () => import(/* webpackChunkName: 'layout' */'@/views/layout/index'),
+    // meta添加后，其子路由都会具有同样作用
+    meta: {
+      requiresAuth: true
+    },
     children: [
       {
         path: '',
@@ -77,6 +82,23 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  // 验证 to路由是否需要验证
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    // 验证用户信息是否存在
+    if (!store.state.user) {
+      // 未登录,跳转到登录
+      return next({ name: 'login' })
+    }
+    next()
+  } else {
+    console.log('当前不要验证')
+    next() // 确保一定要调用 next()
+  }
 })
 
 export default router
