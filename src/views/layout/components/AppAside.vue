@@ -11,12 +11,12 @@
       >
       <el-submenu index="1">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i class="el-icon-lock"></i>
           <span>权限管理</span>
         </template>
         <el-menu-item-group>
           <el-menu-item index="/role">
-              <i class="el-icon-document"></i>
+              <i class="el-icon-user"></i>
               <span>角色列表</span>
           </el-menu-item>
           <el-menu-item index="/menu">
@@ -34,7 +34,7 @@
         <span slot="title">课程管理</span>
       </el-menu-item>
       <el-menu-item index="/user" >
-        <i class="el-icon-document"></i>
+        <i class="el-icon-user"></i>
         <span slot="title">用户管理</span>
       </el-menu-item>
       <el-submenu index="4">
