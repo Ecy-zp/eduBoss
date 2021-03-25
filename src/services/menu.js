@@ -36,3 +36,31 @@ export const deleteMenu = id => {
     url: `/boss/menu/${id}`
   })
 }
+
+// 根据层级获取菜单
+export const getMenuNodeList = () => {
+  return request({
+    method: 'GET',
+    url: '/boss/menu/getMenuNodeList'
+  })
+}
+
+// 给角色分配菜单
+export const allocateRoleMenus = data => {
+  return request({
+    method: 'POST',
+    url: '/boss/menu/allocateRoleMenus',
+    data
+  })
+}
+
+// 获取当前角色拥有的菜单接口
+export const getRoleMenus = roleId => {
+  return request({
+    method: 'GET',
+    url: '/boss/menu/getRoleMenus',
+    params: {
+      roleId
+    }
+  })
+}
