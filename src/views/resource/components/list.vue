@@ -19,7 +19,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
+            <el-button type="primary" @click="onSubmit" :disabled="isLoading">查询</el-button>
           </el-form-item>
           <el-form-item>
             <el-button @click="onReset">重置</el-button>
@@ -29,7 +29,8 @@
       <div class="text item">
         <el-table
         :data="tableData"
-        style="width: 100%">
+        style="width: 100%"
+        v-loading="isLoading">
           <el-table-column
             type="index"
             label="编号"
@@ -70,7 +71,8 @@
           :page-size="form.size"
           background
           layout="total, sizes, prev, pager, next, jumper"
-          :total="totalCount">
+          :total="totalCount"
+          :disabled="isLoading">
         </el-pagination>
       </div>
     </el-card>
@@ -101,7 +103,9 @@ export default {
       },
       tableData: [],
       totalCount: 0,
-      resourcecCategories: []
+      resourcecCategories: [],
+      // 用于保存加载
+      isLoading: false
     }
   },
   methods: {
@@ -111,10 +115,14 @@ export default {
       this.loadResouce()
     },
     async loadResouce () {
+      // 开始加载数据
+      this.isLoading = true
       const { data } = await getResourcecPage(this.form)
       if (data.code === '000000') {
         this.tableData = data.data.records
         this.totalCount = data.data.total
+        // 停止加载数据
+        this.isLoading = false
       }
     },
     handleEdit (Rowdata) {
