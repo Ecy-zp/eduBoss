@@ -42,6 +42,17 @@ const routes = [
         component: () => import(/* webpackChunkName: 'role' */'@/views/role/index')
       },
       {
+        path: '/role/:roleId/alloc',
+        name: 'alloc',
+        component: () => import(/* webpackChunkName: 'role-alloc' */'@/views/role/alloc'),
+        props: true
+      },
+      {
+        path: '/role/:id/edit',
+        name: 'role-edit',
+        component: () => import(/* webpackChunkName: 'role-edit' */'@/views/role/Edit')
+      },
+      {
         path: '/menu',
         name: 'menu',
         component: () => import(/* webpackChunkName: 'menu' */'@/views/menu/index')
