@@ -29,8 +29,6 @@ export default {
   created () {
     // 加载用户信息
     this.loadUserInfo()
-    // 下面是为了功能测试
-    this.loadUserInfo()
   },
   data () {
     return {
