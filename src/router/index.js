@@ -78,6 +78,29 @@ const routes = [
         component: () => import(/* webpackChunkName: 'course' */'@/views/course/index')
       },
       {
+        path: '/course/create',
+        name: 'course-create',
+        component: () => import(/* webpackChunkName: 'create' */'@/views/course/create')
+      },
+      {
+        path: '/course/:courseId/edit',
+        name: 'course-edit',
+        component: () => import(/* webpackChunkName: 'coure-edit' */'@/views/course/Edit'),
+        props: true
+      },
+      {
+        path: '/course/:courseId/section',
+        name: 'course-section',
+        component: () => import(/* webpackChunkName: 'coure-section' */'@/views/course/section'),
+        props: true
+      },
+      {
+        path: '/course/:courseId/video',
+        name: 'course-video',
+        component: () => import(/* webpackChunkName: 'coure-video' */'@/views/course/video'),
+        props: true
+      },
+      {
         path: '/user',
         name: 'user',
         component: () => import(/* webpackChunkName: 'user' */'@/views/user/index')
@@ -88,9 +111,31 @@ const routes = [
         component: () => import(/* webpackChunkName: 'advert' */'@/views/advert/index')
       },
       {
+        path: '/advert/create',
+        name: 'advert-create',
+        component: () => import(/* webpackChunkName: 'advert-create' */'@/views/advert/create')
+      },
+      {
+        path: '/advert/:advertId/edit',
+        name: 'advert-edit',
+        component: () => import(/* webpackChunkName: 'advert-edit' */'@/views/advert/Edit'),
+        props: true
+      },
+      {
         path: '/advert-space',
         name: 'advert-space',
         component: () => import(/* webpackChunkName: 'advert-space' */'@/views/advert-space/index')
+      },
+      {
+        path: '/advert-space/:id/edit',
+        name: 'advert-space-edit',
+        component: () => import(/* webpackChunkName: 'advert-space-edit' */'@/views/advert-space/Edit'),
+        props: true
+      },
+      {
+        path: '/advert-space/create',
+        name: 'advert-space-create',
+        component: () => import(/* webpackChunkName: 'advert-space-create' */'@/views/advert-space/create')
       }
     ]
   },
