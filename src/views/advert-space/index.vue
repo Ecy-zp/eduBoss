@@ -1,10 +1,15 @@
 <template>
   <div class="s">
-    advert-spacee
+    <advertspacelist></advertspacelist>
   </div>
 </template>
 <script>
+import advertspacelist from './components/List'
 export default {
+  name: 'advertpce',
+  components: {
+    advertspacelist
+  }
 }
 </script>
 <style lang="scss" scoped>
