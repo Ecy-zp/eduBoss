@@ -50,7 +50,14 @@
                             roleId: scope.row.id
                           }
                         })">分配菜单</el-button>
-                        <el-button type="text">分配资源</el-button>
+                        <el-button
+                        type="text"
+                        @click="$router.push({
+                          name: 'alloc-resource',
+                          params: {
+                            roleId: scope.row.id
+                          }
+                        })">分配资源</el-button>
                       </div>
                       <div>
                         <el-button
@@ -72,6 +79,15 @@
           v-if="dialogFormVisible"
           ></create-or-update>
         </el-dialog>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :page-sizes="[10, 20, 40, 80]"
+          :page-size="formInline.size"
+          :current-page.sync="formInline.currentPage"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="formInline.total">
+          </el-pagination>
       </el-card>
   </div>
 </template>
@@ -89,7 +105,7 @@ export default {
     return {
       formInline: {
         current: 1,
-        size: 50,
+        size: 10,
         name: ''
       },
       tableData: [],
@@ -105,6 +121,9 @@ export default {
       const { data } = await getRoles(this.formInline)
       if (data.code === '000000') {
         this.tableData = data.data.records
+        this.formInline.currentPage = data.data.current
+        this.formInline.pageSize = data.data.size
+        this.formInline.total = data.data.total
         this.isLoading = false
       }
     },
@@ -130,7 +149,10 @@ export default {
         const { data } = await deleteRole(Rowdata.id)
         if (data.code === '000000') {
           this.loadRoles()
-          this.$message.successs('删除成功')
+          this.$message({
+            type: 'success',
+            message: '已删除成功'
+          })
         }
       }).catch(() => {
         this.$message({
@@ -150,6 +172,15 @@ export default {
     handleAdd () {
       this.dialogFormVisible = true
       this.is_Edit = false
+    },
+    async handleSizeChange (val) {
+      this.formInline.size = val
+      this.formInline.current = 1
+      this.loadRoles()
+    },
+    async handleCurrentChange (val) {
+      this.formInline.current = val
+      this.loadRoles()
     }
   },
   filters: {
