@@ -88,6 +88,15 @@
                 </el-table-column>
             </el-table>
         </div>
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :page-sizes="[100, 200, 400, 800]"
+            :page-size="searchForm.size"
+            :current-page.sync="searchForm.currentPage"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="searchForm.total">
+          </el-pagination>
       </el-card>
   </div>
 </template>
@@ -101,7 +110,7 @@ export default {
       // 查询绑定表单
       searchForm: {
         currentPage: 1,
-        pageSize: 50,
+        pageSize: 100,
         courseName: ''
       },
       //   课程存储数组
@@ -118,6 +127,9 @@ export default {
       const { data } = await getQueryCourse(this.searchForm)
       if (data.code === '000000') {
         this.courseForm = data.data.records
+        this.searchForm.currentPage = data.data.current
+        this.searchForm.pageSize = data.data.size
+        this.searchForm.total = data.data.total
       }
     },
     Search () {
@@ -153,6 +165,15 @@ export default {
           courseId: Rowdata.id
         }
       })
+    },
+    async handleSizeChange (val) {
+      this.searchForm.pageSize = val
+      this.searchForm.currentPage = 1
+      this.loadCourse()
+    },
+    async handleCurrentChange (val) {
+      this.searchForm.currentPage = val
+      this.loadCourse()
     }
   }
 }
