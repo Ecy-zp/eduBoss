@@ -62,6 +62,39 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-dialog
+          title="提示"
+          :visible.sync="dialogVisible"
+          width="30%">
+            <el-form
+            label-width="80px"
+            :data="resourceData">
+              <el-form-item
+              label="资源名称">
+              <el-input v-model="resourceData.name"></el-input>
+              </el-form-item>
+              <el-form-item
+              label="资源路径">
+              <el-input v-model="resourceData.url"></el-input>
+              </el-form-item>
+              <el-form-item
+              label="资源分类">
+              <el-select v-model="resourceData.categoryId" placeholder="资源分类" clearable>
+                <el-option v-for="item in resourcecCategories" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+              </el-form-item>
+              <el-form-item
+              label="描述">
+              <el-input
+              type="textarea"
+              v-model="resourceData.description"></el-input>
+              </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="SubmitResource">确 定</el-button>
+            </span>
+        </el-dialog>
         <!-- 分页结构 -->
         <el-pagination
           @size-change="handleSizeChange"
@@ -80,7 +113,7 @@
 </template>
 
 <script>
-import { getResourcecPage, getResourcecCategories } from '@/services/resource'
+import { getResourcecPage, getResourcecCategories, getResourceByid, saveOrUpdate } from '@/services/resource'
 export default {
   name: 'Resourcelist',
   created () {
@@ -105,7 +138,10 @@ export default {
       totalCount: 0,
       resourcecCategories: [],
       // 用于保存加载
-      isLoading: false
+      isLoading: false,
+      dialogVisible: false,
+      // 编辑表单资源数据
+      resourceData: {}
     }
   },
   methods: {
@@ -125,8 +161,12 @@ export default {
         this.isLoading = false
       }
     },
-    handleEdit (Rowdata) {
-      console.log(Rowdata)
+    async handleEdit (Rowdata) {
+      this.dialogVisible = true
+      const { data } = await getResourceByid(Rowdata.id)
+      if (data.code === '000000') {
+        this.resourceData = data.data
+      }
     },
     handleDelete (Rowdata) {
       console.log(Rowdata)
@@ -149,6 +189,15 @@ export default {
     },
     onReset () {
       this.$refs.form.resetFields()
+    },
+    async SubmitResource () {
+      this.dialogVisible = true
+      const { data } = await saveOrUpdate(this.resourceData)
+      if (data.code === '000000') {
+        this.$message.success('编辑成功!')
+        this.loadResouce()
+        this.dialogVisible = false
+      }
     }
   },
   filters: {
