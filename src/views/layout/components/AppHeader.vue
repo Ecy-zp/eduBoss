@@ -3,9 +3,11 @@
     <!-- 左侧面包屑 -->
     <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
-        <el-breadcrumb-item><a href="/">课程管理</a></el-breadcrumb-item>
-        <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-        <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+        <el-breadcrumb-item
+        v-for="(item,index) in $route.meta"
+        :key="item.title"
+        :id="index"
+        :to="item.url">{{item.title}}</el-breadcrumb-item>
     </el-breadcrumb>
     <el-dropdown>
     <!-- 右侧下拉菜单 -->
