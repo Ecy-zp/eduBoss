@@ -19,7 +19,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSearch">查询</el-button>
-                <el-button type="primary">重置</el-button>
+                <el-button type="primary" @click="onReset">重置</el-button>
             </el-form-item>
             </el-form>
         </div>
@@ -96,6 +96,15 @@
           <el-button type="primary" @click="dialogTableVisible=false">取消</el-button>
         </div>
       </el-dialog>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :page-sizes="[10, 20, 40, 80]"
+            :page-size="formInline.size"
+            :current-page.sync="formInline.currentPage"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="formInline.total">
+          </el-pagination>
   </div>
 </template>
 
@@ -110,7 +119,7 @@ export default {
       // 查询框数据
       formInline: {
         currentPage: 1,
-        pageSize: 100,
+        pageSize: 10,
         phone: '',
         rangeDate: [],
         startCreateTime: '',
@@ -143,6 +152,9 @@ export default {
       const { data } = await getUserPage(this.formInline)
       if (data.code === '000000') {
         this.Userdata = data.data.records
+        this.formInline.currentPage = data.data.current
+        this.formInline.pageSize = data.data.size
+        this.formInline.total = data.data.total
       }
     },
     // 查询按钮
@@ -174,6 +186,26 @@ export default {
       if (data.code === '000000') {
         this.$message.success('分配成功')
       }
+    },
+    onReset () {
+      this.formInline = {
+        currentPage: 1,
+        pageSize: 100,
+        phone: '',
+        rangeDate: [],
+        startCreateTime: '',
+        endCreateTime: ''
+      }
+      this.loadUser()
+    },
+    async handleSizeChange (val) {
+      this.formInline.pageSize = val
+      this.formInline.currentPage = 1
+      this.loadUser()
+    },
+    async handleCurrentChange (val) {
+      this.formInline.currentPage = val
+      this.loadUser()
     }
   },
   filters: {
