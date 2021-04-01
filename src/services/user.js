@@ -50,3 +50,11 @@ export const enableUser = userId => {
     }
   })
 }
+
+// 获取用户菜单和资源权限列表
+export const getUserPermissions = () => {
+  return request({
+    method: 'GET',
+    url: '/boss/permission/getUserPermissions'
+  })
+}
