@@ -20,7 +20,7 @@
             </el-form-item>
             <!-- 广告位置 -->
             <el-form-item label="广告位置" prop="AdvertInfos">
-                <el-select v-model="options" placeholder="请选择">
+                <el-select v-model="advertInfo.spaceId" placeholder="请选择">
                     <el-option
                     v-for="item in AdvertInfos"
                     :key="item.id"
@@ -65,7 +65,7 @@
                 <el-input type="textarea" v-model="advertInfo.text"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button>提交</el-button>
+                <el-button @click="onSubmit">提交</el-button>
                 <el-button @click="onReset">重置</el-button>
             </el-form-item>
         </el-form>
@@ -75,7 +75,7 @@
 
 <script>
 import AdvertImage from './advertImageUp'
-import { getAdById, getAllSpaces, getSpaceById } from '@/services/advert'
+import { getAdById, getAllSpaces, getSpaceById, saveOrUpdate } from '@/services/advert'
 export default {
   name: 'craeteOrUpdate',
   data () {
@@ -106,6 +106,7 @@ export default {
       const { data } = await getAdById(this.advert_Id)
       if (data.success === true) {
         this.advertInfo = data.content
+        this.isLoading = false
       }
       const { data: data2 } = await getSpaceById(this.advertInfo.spaceId)
       if (data2.success === true) {
@@ -121,6 +122,15 @@ export default {
     },
     onReset () {
       this.$refs.advertInfo.resetFields()
+    },
+    async onSubmit () {
+      const { data } = await saveOrUpdate(this.advertInfo)
+      if (data.success === true) {
+        this.$message.success('提交成功')
+        this.$router.push({
+          name: 'advert'
+        })
+      }
     }
   }
 }
