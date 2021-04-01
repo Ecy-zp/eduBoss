@@ -17,3 +17,28 @@ export const getResourcecCategories = () => {
     url: '/boss/resource/category/getAll'
   })
 }
+
+// 获取所有资源
+export const getAll = () => {
+  return request({
+    method: 'GET',
+    url: '/boss/resource/getAll'
+  })
+}
+
+// 获取资源
+export const getResourceByid = id => {
+  return request({
+    method: 'GET',
+    url: `/boss/resource/${id}`
+  })
+}
+
+// 保存或者更新资源
+export const saveOrUpdate = data => {
+  return request({
+    method: 'POST',
+    url: '/boss/resource/saveOrUpdate',
+    data
+  })
+}
